@@ -2,8 +2,6 @@ const mongoose = require('mongoose');
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
 
-const saltRounds = 10;
-
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -21,16 +19,15 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         minlength: 5,
-        maxlength: 1024         
+        maxlength: 1024,
+        required: true         
     }
 });
 
-userSchema.method.generatePassword = async function(pass) {
-    await bcrypt.hash(pass, saltRounds, function(err, hash) {
-        if(err) throw new Error('cannot generate password');
-        this.password = hash;
-    });
-
+userSchema.methods.generatePassword = async function(pass) {
+    const salt = await bcrypt.genSalt(10);
+    const hashed = await bcrypt.hash(pass,salt);
+    return hashed;
 }
 
 const User = mongoose.model('User', userSchema);
@@ -46,6 +43,7 @@ function validateUser(args) {
                 .email()
                 .min(5)
                 .max(255),
+
         password: Joi.string()
                 .required()
                 .min(5)
