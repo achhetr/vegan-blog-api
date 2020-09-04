@@ -14,7 +14,7 @@ module.exports = async (req,res,next) => {
             next();
         }
         catch(ex){
-            return res.status(400).send('Bad Request');
+            return res.status(400).send('Bad from auth Request');
         }
     }
     next();

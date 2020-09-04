@@ -5,6 +5,11 @@ const {User, validateUser} = require('../model/users');
 
 const route = express.Router();
 
+route.get('/', async (req,res) => {
+    res.send('Get everything')
+});
+
+
 route.post('/', async (req,res) => {
     if(!req.body.name || !req.body.email || !req.body.password) 
         return res.status(400).send('Missing Information');

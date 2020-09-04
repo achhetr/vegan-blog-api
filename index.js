@@ -17,6 +17,9 @@ app.use(cookieParser());
 app.use('/api/users',users);
 app.use('/api/login',login);
 app.use('/api/blog',blog);
+app.use('/',(req,res) => {
+    res.render('home page');
+})
 
 const port = 3000;
 
